@@ -21,6 +21,7 @@ def write_column(group, subgroup):
 
 def main():
     # input parameters
+    data_directory = 'AoT_Chicago.complete.2020-05-04/'
     output_name = 'chicago_test.h5'
     ext = '.csv'
     input_name = ['nodes', 'sensors', 'data']
@@ -28,7 +29,7 @@ def main():
     # open files to be converted
     files = []
     for f in input_name:
-        files.append(pd.read_csv(f + ext))
+        files.append(pd.read_csv(data_directory + f + ext))
 
     # init HDF5 file
     ofile = h5py.File(output_name, 'a')
