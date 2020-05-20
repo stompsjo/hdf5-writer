@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-import h5py
 import os
 
 
@@ -16,33 +14,12 @@ def main():
     for f in input_name:
         files.append(pd.read_csv(data_directory + f + ext))
 
-    # init HDF5 file
-    ofile = h5py.File(output_name, 'a')
-
     # main writing script
     for csv, name in zip(files, input_name):
         print('Working on ' + name + ext)
-        ofile.create_group(name)
-        # each column in a file
-        for col in csv:
-            print('Working on ' + col)
-            if csv[col].dtypes == object:
-                # pandas object dtype not compatible w/ h5py
-                # switch to utf-8 string encoding instead
-                dt = h5py.string_dtype(encoding='utf-8')
-                ofile[name].create_dataset(col,
-                                           csv[col].shape,
-                                           dtype=dt)
-            else:
-                ofile[name].create_dataset(col,
-                                           csv[col].shape,
-                                           dtype=csv[col].dtypes)
-            for row in enumerate(csv[col]):
-                # using h5py-numpy compatible nan for non-string variables
-                if pd.isna(row[1]):
-                    ofile[name][col][row[0]] = np.nan
-                else:
-                    ofile[name][col][row[0]] = row[1]
+        
+        # use pandas to add each csv to hdf5 file
+        csv.to_hdf(output_name, name, mode='a')
 
     print('Complete!')
 
