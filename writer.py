@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 import os
 
 
@@ -27,4 +28,7 @@ def main():
 if __name__ == "__main__":
     # for testing, remove file before trying to write
     os.system("rm chicago_test.h5")
+    start_time = time()
     main()
+    print('File writer took %.2f seconds for this file size.'
+          % (time() - start_time))
