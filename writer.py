@@ -20,10 +20,9 @@ def main():
         print('Working on ' + name + ext)
 
         # load each csv file
-        for chunk in pd.read_csv(data_directory + name + ext, chunksize=5000)
-
-        # use pandas to add each csv to hdf5 file
-        csv.to_hdf(output_name, name, mode='a')
+        for chunk in pd.read_csv(data_directory + name + ext, chunksize=5000):
+            # use pandas to add each csv to hdf5 file
+            chunk.to_hdf(output_name, name, mode='a')
 
     print('Complete!')
 
